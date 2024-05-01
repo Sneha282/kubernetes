@@ -1,0 +1,70 @@
+#Pod.yaml**
+
+apiVersion: v1
+kind: Pod
+metadata:
+ name: nginx-pod
+ labels:
+  author: sneha
+  type: reverse-proxy
+spec:
+ containers:
+  - name: appserver
+    image: nginx
+
+#replication-controller.yaml
+
+apiVersion: v1
+kind: ReplicationController
+metadata:
+ name: httpd-rc
+ labels:
+  author: sneha
+  type: rc
+spec:
+ replicas: 3
+ template:
+  metadata:
+   name: httpd-pod
+   labels:
+    author: sneha
+    type: pod
+  spec:
+   containers:
+    - name: httpd
+      image: httpd
+      ports:
+       - containerPort: 80
+         hostPort: 8080
+
+#replicaset.yaml
+
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+ name: tomcat-rs
+ labels:
+  author: sneha
+  type: appserver
+spec:
+ replicas: 3
+ selector:
+  matchLabels:
+   type: appserver
+ template:
+  metadata:
+   name: tomcat-pod
+   labels:
+    author: sneha
+    type: appserver
+  spec:
+   containers:
+    - name: myappserver
+      image: tomcat
+      ports:
+       - containerPort: 8080
+
+
+Diff bw RS&RC
+selector element and matchlabels (extra field)  present in RS
+
