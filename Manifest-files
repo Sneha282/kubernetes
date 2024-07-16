@@ -68,3 +68,44 @@ spec:
 Diff bw RS&RC
 selector element and matchlabels (extra field)  present in RS
 
+Deployment.yaml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: nginx
+labels:
+  author: sneha
+  app: nginx
+spec:
+ replicas:3
+selector:
+ matchLabels:
+   app:nginx
+template:
+  metadata:
+   labels:
+     app:nginx
+spec:
+containers:
+  name: nginx
+  image: nginx:latest
+ ports:
+   containerport:8080
+
+
+
+Service.yaml
+
+
+apiVersion: apps/v1
+kind: Service
+metadata:
+ name: nginx
+spec:
+ selector:
+     app:nginx
+ports:
+ -protocol: TCP
+  port:80
+  targetport:8080
